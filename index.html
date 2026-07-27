@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syntheta AI — Data Multiplication for Physical AI</title>
+<meta name="description" content="Syntheta AI turns one captured frame into many independently valid, fully labeled training variants for physical AI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0B0E10;
+    --void-2:#13181C;
+    --void-3:#181F24;
+    --paper:#EDEAE2;
+    --paper-dim:#94A0A6;
+    --paper-dimmer:#5B656B;
+    --signal:#4CE0B3;   /* real / captured data */
+    --multiply:#B98CFF; /* synthetic / generated data */
+    --multiply-b:#8C6BFF;
+    --amber:#FFB454;    /* stat highlight */
+    --line:#232B31;
+    --line-soft:#1B2126;
+    --radius:2px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--void);
+    color:var(--paper);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  body{
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(237,234,226,0.05) 1px, transparent 0);
+    background-size: 28px 28px;
+  }
+
+  h1,h2,h3{
+    font-family:'Space Grotesk', sans-serif;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:inherit;}
+  img,video{max-width:100%;display:block;}
+
+  ::selection{background:var(--multiply); color:var(--void);}
+
+  :focus-visible{
+    outline:2px solid var(--signal);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--paper-dimmer);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:16px;height:1px;
+    background:var(--paper-dimmer);
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- nav ---------- */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,14,16,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:68px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:19px;
+    letter-spacing:-0.01em;
+    text-decoration:none;
+  }
+  .brand-mark{
+    width:26px;height:26px;
+    position:relative;
+    flex:none;
+  }
+  .brand-mark svg{width:100%;height:100%;}
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:36px;
+  }
+  .nav-links a{
+    font-size:14px;
+    text-decoration:none;
+    color:var(--paper-dim);
+    transition:color .2s ease;
+  }
+  .nav-links a:hover{color:var(--paper);}
+  .nav-cta{
+    display:flex; gap:12px; align-items:center;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.02em;
+    padding:11px 18px;
+    border-radius:var(--radius);
+    text-decoration:none;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform .15s ease, background .2s ease, border-color .2s ease, color .2s ease;
+    white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{
+    background:var(--paper);
+    color:var(--void);
+  }
+  .btn-primary:hover{background:var(--signal);}
+  .btn-ghost{
+    border-color:var(--line);
+    color:var(--paper);
+  }
+  .btn-ghost:hover{border-color:var(--paper-dim);}
+  .btn-sm{padding:8px 14px; font-size:12px;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:64px 0 40px;
+  }
+  .hero-top{
+    max-width:720px;
+  }
+  .hero h1{
+    font-size:clamp(38px, 5vw, 64px);
+    line-height:1.03;
+    font-weight:600;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--multiply);
+  }
+  .hero p.lede{
+    margin:26px 0 34px;
+    font-size:17px;
+    line-height:1.6;
+    color:var(--paper-dim);
+    max-width:46ch;
+  }
+  .hero-ctas{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
+  .stat-strip{
+    margin-top:32px;
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    color:var(--paper-dimmer);
+    border-top:1px solid var(--line-soft);
+    padding-top:20px;
+  }
+  .stat-strip strong{color:var(--paper); font-weight:500;}
+
+  /* ---------- sections generic ---------- */
+  section{padding:60px 0;}
+  section.tight{padding:36px 0;}
+  .sec-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    margin-bottom:48px;
+    flex-wrap:wrap;
+  }
+  .sec-head h2{
+    font-size:clamp(26px, 3.4vw, 38px);
+    font-weight:600;
+    max-width:20ch;
+  }
+  .sec-head p{
+    color:var(--paper-dim);
+    max-width:40ch;
+    font-size:15px;
+    line-height:1.6;
+    margin:0;
+  }
+  .rule{
+    border:none;
+    border-top:1px solid var(--line-soft);
+    margin:0;
+  }
+
+  /* ---------- clip gallery ---------- */
+  .clip-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:16px;
+  }
+  .clip-card{
+    background:var(--void-2);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .clip-card:hover{border-color:var(--paper-dimmer); transform:translateY(-3px);}
+  .clip-media{
+    aspect-ratio:4/3;
+    position:relative;
+    background:
+      linear-gradient(135deg, var(--tile-a, #1c232a), var(--tile-b, #0e1215));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .clip-media video, .clip-media img{
+    width:100%; height:100%; object-fit:cover;
+  }
+  .clip-media .noise{
+    position:absolute; inset:0;
+    background-image:radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
+    background-size:10px 10px;
+    opacity:.5;
+  }
+  .play-badge{
+    position:relative;
+    width:38px;height:38px;
+    border-radius:50%;
+    background:rgba(11,14,16,0.55);
+    border:1px solid rgba(237,234,226,0.35);
+    display:flex;align-items:center;justify-content:center;
+    backdrop-filter:blur(2px);
+  }
+  .play-badge svg{width:13px;height:13px; margin-left:2px;}
+  .clip-tag{
+    position:absolute;
+    top:10px; left:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    padding:4px 7px;
+    border-radius:3px;
+    background:rgba(11,14,16,0.65);
+    border:1px solid var(--tag-color, var(--signal));
+    color:var(--tag-color, var(--signal));
+  }
+  .clip-body{
+    padding:12px 14px 14px;
+    border-top:1px solid var(--line-soft);
+  }
+  .clip-body .t{
+    font-size:13.5px;
+    font-weight:500;
+    margin-bottom:3px;
+  }
+  .clip-body .n{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--paper-dimmer);
+  }
+  .clip-empty{
+    grid-column:1/-1;
+    border:1px dashed var(--line);
+    border-radius:6px;
+    padding:40px 24px;
+    text-align:center;
+    color:var(--paper-dimmer);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+  }
+
+  /* ---------- pipeline ---------- */
+  .pipeline{
+    display:grid;
+    grid-template-columns:1fr;
+    border-top:1px solid var(--line-soft);
+  }
+  .pipe-row{
+    display:grid;
+    grid-template-columns:64px 1fr auto;
+    gap:22px;
+    align-items:start;
+    padding:26px 0;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .pipe-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--paper-dimmer);
+    padding-top:3px;
+  }
+  .pipe-main h3{
+    font-size:17px;
+    font-weight:600;
+    margin-bottom:6px;
+  }
+  .pipe-main p{
+    margin:0;
+    color:var(--paper-dim);
+    font-size:14px;
+    line-height:1.6;
+    max-width:62ch;
+  }
+  .pipe-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.04em;
+    color:var(--void);
+    background:var(--signal);
+    padding:4px 9px;
+    border-radius:3px;
+    height:fit-content;
+    white-space:nowrap;
+  }
+  .pipe-tag.synthetic{background:var(--multiply);}
+  .pipe-tag.util{background:var(--paper-dimmer); color:var(--void-2);}
+
+  /* ---------- stats ---------- */
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .stat{
+    padding:30px 26px;
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .stat:nth-child(4n){border-right:none;}
+  .stat .num{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:34px;
+    font-weight:700;
+    color:var(--amber);
+    line-height:1;
+  }
+  .stat .lbl{
+    margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--paper-dimmer);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+  }
+  .built-on{
+    margin-top:28px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .built-on span.lbl{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--paper-dimmer);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-right:6px;
+  }
+  .badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    padding:7px 12px;
+    border:1px solid var(--line);
+    border-radius:4px;
+    color:var(--paper-dim);
+  }
+
+  /* ---------- domains ---------- */
+  .tag-cloud{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .tag-chip{
+    font-size:14px;
+    padding:9px 16px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    color:var(--paper-dim);
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .tag-chip:hover{border-color:var(--signal); color:var(--paper);}
+
+  /* ---------- closing cta ---------- */
+  .closing{
+    text-align:center;
+    padding:64px 0 56px;
+    border-top:1px solid var(--line-soft);
+  }
+  .closing h2{
+    font-size:clamp(32px, 5vw, 54px);
+    font-weight:600;
+    margin-bottom:30px;
+  }
+  .closing .btn{padding:14px 26px; font-size:14px;}
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top:1px solid var(--line-soft);
+    padding:36px 0;
+  }
+  .foot-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+    font-size:13px;
+    color:var(--paper-dimmer);
+  }
+  .foot-links{display:flex; gap:22px;}
+  .foot-links a{text-decoration:none; color:var(--paper-dimmer); transition:color .2s ease;}
+  .foot-links a:hover{color:var(--paper);}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .clip-grid{grid-template-columns:repeat(2,1fr);}
+    .stats-grid{grid-template-columns:repeat(2,1fr);}
+    .stat:nth-child(4n){border-right:1px solid var(--line);}
+    .stat:nth-child(2n){border-right:none;}
+    .nav-links{display:none;}
+  }
+  @media (max-width:560px){
+    .wrap{padding:0 20px;}
+    .clip-grid{grid-template-columns:1fr;}
+    .stats-grid{grid-template-columns:1fr;}
+    .stat{border-right:none !important;}
+    .pipe-row{grid-template-columns:40px 1fr; }
+    .pipe-row .pipe-tag{grid-column:2; margin-top:8px;}
+    .sec-head{align-items:flex-start;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .reveal.in{transition:none; transform:none; opacity:1;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav">
+    <a href="#top" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 40 40" fill="none">
+          <ellipse cx="20" cy="20" rx="14" ry="12" fill="none" stroke="#B98CFF" stroke-width="4" stroke-linecap="round"/>
+          <path d="M3,20 C7,9 11,9 15,20 C19,31 23,31 27,20 C29.5,13 32,13 34,20 C34.7,21.8 35.6,21.8 37,20" fill="none" stroke="#4CE0B3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      Syntheta AI
+    </a>
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#samples">Samples</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#beta" class="btn btn-ghost btn-sm">Contact</a>
+      <a href="#beta" class="btn btn-primary btn-sm">Sign up for beta</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <div class="reveal in">
+          <div class="eyebrow">Data multiplication · physical AI</div>
+          <h1>One frame in.<br>Many valid frames out<em>.</em></h1>
+          <p class="lede">Syntheta AI turns one captured frame into several fully labeled, independently valid training variants — no re-shoot needed.</p>
+          <div class="hero-ctas">
+            <a href="#beta" class="btn btn-primary">Sign up for beta</a>
+            <a href="#samples" class="btn btn-ghost">See sample output →</a>
+          </div>
+          <div class="stat-strip">
+            <div><strong>6 → 56</strong> frames</div>
+            <div><strong>2.0×</strong> multiplier, last validated run</div>
+            <div><strong>2</strong> detection passes per input</div>
+            <div><strong>3</strong> chained restoration / synthesis engines</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= ABOUT / DESCRIPTION ================= -->
+  <section id="about" class="tight">
+    <div class="wrap">
+      <div class="reveal" style="max-width:70ch;">
+        <p style="color:var(--paper-dim); font-size:16px; line-height:1.7; margin:0;">
+          Real-world capture is slow and never covers every condition. Syntheta AI restores each frame, then multiplies it through parallel branches — mutation, latent re-synthesis, and a clean baseline — all fully and independently labeled.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= SAMPLES ================= -->
+  <section id="samples">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="eyebrow">Sample output</div>
+          <h2>From the same six frames</h2>
+        </div>
+        <p>Placeholders below — swap in your own clips.</p>
+      </div>
+
+      <div class="clip-grid" id="clipGrid"></div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= BETA SIGNUP ================= -->
+  <section class="closing" id="beta">
+    <div class="wrap">
+      <div class="reveal">
+        <h2>Get early access.</h2>
+        <p style="color:var(--paper-dim); font-size:15px; margin:0 0 30px;">Multiply your own frames.</p>
+        <a href="mailto:beta@syntheta.ai?subject=Beta%20access%20request" class="btn btn-primary">Sign up for beta</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <div>Syntheta AI — data multiplication for physical AI.</div>
+    <div class="foot-links">
+      <a href="#top">Back to top</a>
+      <a href="mailto:beta@syntheta.ai?subject=Beta%20access%20request">Sign up for beta</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =========================================================================
+   ADD YOUR OWN CLIPS HERE
+   -------------------------------------------------------------------------
+   Each entry renders one card in the "Samples" grid. Leave `src` empty
+   (or omit it) to show a labeled placeholder tile — useful while you're
+   still collecting real output. Once you have a real clip, either:
+
+   - point `src` at a hosted video URL (mp4, same-origin or CORS-enabled), or
+   - point `src` at a hosted image URL (jpg/png/webp)
+
+   `kind` controls color-coding: "real" (signal green) for original/restored
+   frames, "synthetic" (violet) for anything Branch A/B/C produced.
+   ========================================================================= */
+const CLIPS = [
+  { title: "Original capture",        tag: "input",     kind: "real",      note: "6 frames · 128×128",              src: "" },
+  { title: "ND-T4 restoration",       tag: "restored",   kind: "real",      note: "event-camera style · dark-frame fallback", src: "" },
+  { title: "Branch A — R2R mutation", tag: "branch a",   kind: "synthetic", note: "28 frames · 26 labeled",          src: "" },
+  { title: "Branch B — FunctaGen",    tag: "branch b",   kind: "synthetic", note: "9 frames · INR slerp",            src: "" },
+  { title: "Branch C — passthrough",  tag: "branch c",   kind: "synthetic", note: "28 frames · 26 labeled",          src: "" },
+  { title: "Pose overlay",            tag: "labels",     kind: "real",      note: "YOLOv8n-pose · PersonTrackSet",   src: "" },
+  { title: "INR latent slerp",        tag: "branch b",   kind: "synthetic", note: "index 0 → 1 · 9 steps",           src: "" },
+  { title: "Full manifest",           tag: "summary",    kind: "synthetic", note: "56 outputs · 2.0× multiplier",    src: "" },
+];
+
+function isVideo(src){
+  return /\.(mp4|webm|mov)(\?.*)?$/i.test(src || "");
+}
+
+function renderClips(){
+  const grid = document.getElementById("clipGrid");
+  const palettes = [
+    ["#1c232a","#0e1215"], ["#1a2620","#0d1611"],
+    ["#241c2a","#150e18"], ["#231f2c","#120f18"],
+  ];
+  grid.innerHTML = CLIPS.map((c, i) => {
+    const color = c.kind === "real" ? "var(--signal)" : "var(--multiply)";
+    const [a,b] = palettes[i % palettes.length];
+    let mediaInner;
+    if (c.src && isVideo(c.src)) {
+      mediaInner = `<video src="${c.src}" muted loop playsinline autoplay></video>`;
+    } else if (c.src) {
+      mediaInner = `<img src="${c.src}" alt="${c.title}">`;
+    } else {
+      mediaInner = `
+        <div class="noise"></div>
+        <div class="play-badge">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 4L20 12L6 20V4Z" fill="#EDEAE2"/></svg>
+        </div>`;
+    }
+    return `
+      <div class="clip-card reveal in" style="--tile-a:${a};--tile-b:${b}">
+        <div class="clip-media" style="--tag-color:${color}">
+          <span class="clip-tag">${c.tag}</span>
+          ${mediaInner}
+        </div>
+        <div class="clip-body">
+          <div class="t">${c.title}</div>
+          <div class="n">${c.note}</div>
+        </div>
+      </div>`;
+  }).join("");
+}
+renderClips();
+
+/* scroll reveal */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("in"); });
+}, { threshold: 0.12 });
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
