@@ -165,6 +165,39 @@
   .hero{
     padding:64px 0 40px;
   }
+  .hero-split{
+    display:flex;
+    gap:48px;
+    align-items:center;
+  }
+  .hero-text{flex:1 1 480px;}
+  .hero-visual{
+    flex:1 1 400px;
+    position:relative;
+    border-radius:8px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:var(--void-2);
+    aspect-ratio:1/1;
+    box-shadow:0 0 60px rgba(185,140,255,0.06);
+  }
+  .hero-visual video{
+    width:100%;height:100%;object-fit:cover;
+    display:block;
+  }
+  .hero-visual .badge-overlay{
+    position:absolute;
+    bottom:12px;left:12px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    padding:4px 7px;
+    border-radius:3px;
+    background:rgba(11,14,16,0.7);
+    border:1px solid var(--signal);
+    color:var(--signal);
+  }
   .hero-top{
     max-width:720px;
   }
@@ -249,7 +282,7 @@
   }
   .clip-card:hover{border-color:var(--paper-dimmer); transform:translateY(-3px);}
   .clip-media{
-    aspect-ratio:4/3;
+    aspect-ratio:1/1;
     position:relative;
     background:
       linear-gradient(135deg, var(--tile-a, #1c232a), var(--tile-b, #0e1215));
@@ -462,6 +495,9 @@
 
   /* ---------- responsive ---------- */
   @media (max-width:980px){
+    .hero-split{flex-direction:column; gap:28px;}
+    .hero-text{flex:none;}
+    .hero-visual{flex:none; width:100%;}
     .clip-grid{grid-template-columns:repeat(2,1fr);}
     .stats-grid{grid-template-columns:repeat(2,1fr);}
     .stat:nth-child(4n){border-right:1px solid var(--line);}
@@ -512,20 +548,26 @@
   <!-- ================= HERO ================= -->
   <section class="hero">
     <div class="wrap">
-      <div class="hero-top">
-        <div class="reveal in">
-          <div class="eyebrow">Data multiplication · physical AI</div>
-          <h1>One frame in.<br>Many valid frames out<em>.</em></h1>
-          <p class="lede">Syntheta AI turns one captured frame into several fully labeled, independently valid training variants — no re-shoot needed.</p>
-          <div class="hero-ctas">
-            <a href="#beta" class="btn btn-primary">Sign up for beta</a>
-            <a href="#samples" class="btn btn-ghost">See sample output →</a>
+      <div class="reveal in">
+        <div class="hero-split">
+          <div class="hero-text">
+            <div class="eyebrow">Data multiplication · physical AI</div>
+            <h1>One frame in.<br>Many valid frames out<em>.</em></h1>
+            <p class="lede">Syntheta AI turns one captured frame into several fully labeled, independently valid training variants — no re-shoot needed.</p>
+            <div class="hero-ctas">
+              <a href="#beta" class="btn btn-primary">Sign up for beta</a>
+              <a href="#samples" class="btn btn-ghost">See sample output →</a>
+            </div>
+            <div class="stat-strip">
+              <div><strong>6 → 56</strong> frames</div>
+              <div><strong>2.0×</strong> multiplier, last validated run</div>
+              <div><strong>2</strong> detection passes per input</div>
+              <div><strong>3</strong> chained restoration / synthesis engines</div>
+            </div>
           </div>
-          <div class="stat-strip">
-            <div><strong>6 → 56</strong> frames</div>
-            <div><strong>2.0×</strong> multiplier, last validated run</div>
-            <div><strong>2</strong> detection passes per input</div>
-            <div><strong>3</strong> chained restoration / synthesis engines</div>
+          <div class="hero-visual">
+            <video src="clip-01.mp4" muted loop playsinline autoplay></video>
+            <div class="badge-overlay">original capture · 6 frames</div>
           </div>
         </div>
       </div>
@@ -602,7 +644,7 @@
    frames, "synthetic" (violet) for anything Branch A/B/C produced.
    ========================================================================= */
 const CLIPS = [
-  { title: "Original capture",        tag: "input",     kind: "real",      note: "6 frames · 128×128",              src: "clips/clip-01.mp4" },
+  { title: "Original capture",        tag: "input",     kind: "real",      note: "6 frames · 128×128",              src: "clip-01.mp4" },
   { title: "ND-T4 restoration",       tag: "restored",   kind: "real",      note: "event-camera style · dark-frame fallback", src: "" },
   { title: "Branch A — R2R mutation", tag: "branch a",   kind: "synthetic", note: "28 frames · 26 labeled",          src: "" },
   { title: "Branch B — FunctaGen",    tag: "branch b",   kind: "synthetic", note: "9 frames · INR slerp",            src: "" },
