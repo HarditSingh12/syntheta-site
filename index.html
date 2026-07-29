@@ -213,6 +213,8 @@
     display:flex; align-items:center; justify-content:center; overflow:hidden;
   }
   .cs-media video, .cs-media img{width:100%; height:100%; object-fit:cover;}
+  .cs-media.contain{background:var(--panel);}
+  .cs-media.contain img{object-fit:contain; padding:6px;}
   .cs-media .grain{
     position:absolute; inset:0;
     background-image:radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
@@ -461,7 +463,7 @@
           <div class="eyebrow">Contact sheet</div>
           <h2>From the same six frames</h2>
         </div>
-        <p>The first tile is the real input capture. The rest are wired for real branch output — drop rendered frames into <span class="mono">clips/</span> and they take the placeholder's place.</p>
+        <p>Six of eight tiles below are real output from an actual run. The remaining two are wired and waiting — drop rendered frames into <span class="mono">samples/</span> and they take the placeholder's place.</p>
       </div>
 
       <div class="light-table contact-sheet-wrap reveal in" style="background:var(--dark-3); border-color:var(--line);">
@@ -546,21 +548,27 @@
    -------------------------------------------------------------------------
    Each entry renders one tile in the contact sheet. Leave `src` empty to
    show a placeholder marker. Point `src` at a hosted video (mp4) or image
-   (jpg/png/webp) URL once you have real branch output.
+   (jpg/png/webp) URL once you have real branch output — images referenced
+   here live in samples/, the source video lives in clips/.
 
    `kind` controls the tag color: "real" (safelight red) for original/
    restored frames, "synthetic" (event cyan) for anything Branch A/B/C/D
    produced, "util" (paper) for detection/manifest tiles.
+
+   `fit: "contain"` is for montage/diagnostic figures (matplotlib grids,
+   before/after comparisons) that should sit whole on a light backdrop
+   rather than being cropped like a photo. Leave it off for straight
+   photographic crops.
    ========================================================================= */
 const TILES = [
-  { title: "Original capture",        tag: "input",     kind: "real",      note: "6 frames · 128×128",                src: "clips/clip-01.mp4", loupe: true },
-  { title: "ND-T4 restoration",       tag: "frame 02",   kind: "real",      note: "EventCore V8.1 · dark-frame fallback", src: "" },
-  { title: "Branch A — R2R mutation", tag: "frame 03",   kind: "synthetic", note: "28 frames · 26 labeled",            src: "" },
-  { title: "Branch C — passthrough",  tag: "frame 04",   kind: "util",      note: "28 frames · 26 labeled",            src: "" },
-  { title: "FunctaGen — INR slerp",   tag: "frame 05",   kind: "synthetic", note: "9 frames · latent slerp",           src: "" },
-  { title: "Branch B — fresh detect", tag: "frame 06",   kind: "synthetic", note: "9 frames · conf ≥ 0.1",             src: "" },
-  { title: "Pose overlay",            tag: "labels",     kind: "real",      note: "YOLOv8n-pose · PersonTrackSet",     src: "" },
-  { title: "Full manifest",           tag: "frame 07",   kind: "util",      note: "56 outputs · 2.0× multiplier",      src: "" },
+  { title: "Original capture",         tag: "input",     kind: "real",      note: "6 frames · 128×128",                    src: "clips/clip-01.mp4", loupe: true },
+  { title: "ND-T4 restoration",        tag: "frame 02",  kind: "real",      note: "original · restored · ON/OFF events",   src: "samples/nd-t4-restoration.jpg", fit: "contain" },
+  { title: "Branch A — R2R mutation",  tag: "frame 03",  kind: "synthetic", note: "28 frames · restored → mutated",        src: "samples/branch-a-r2r.jpg", fit: "contain" },
+  { title: "Branch C — passthrough",   tag: "frame 04",  kind: "util",      note: "28 frames · transferred labels",        src: "samples/branch-c-passthrough.jpg", fit: "contain" },
+  { title: "FunctaGen — render check", tag: "frame 05",  kind: "synthetic", note: "epoch 100 · target vs. rendered",       src: "samples/functagen-render-check.jpg", fit: "contain" },
+  { title: "Branch B — fresh detect",  tag: "frame 06",  kind: "synthetic", note: "YOLOv8n-pose · conf ≥ 0.1",             src: "samples/branch-b-detect.jpg" },
+  { title: "Pose overlay",             tag: "labels",    kind: "real",      note: "YOLOv8n-pose · PersonTrackSet",         src: "" },
+  { title: "Full manifest",            tag: "frame 07",  kind: "util",      note: "56 outputs · 2.0× multiplier",          src: "" },
 ];
 
 function isVideo(src){ return /\.(mp4|webm|mov)(\?.*)?$/i.test(src || ""); }
@@ -585,9 +593,10 @@ function renderTiles(){
       mediaInner = `<div class="grain"></div><div class="cs-pending-mark">AWAITING<br>OUTPUT</div>`;
     }
     const loupe = c.loupe ? `<div class="cs-loupe"></div>` : "";
+    const containClass = c.fit === "contain" ? " contain" : "";
     return `
       <div class="cs-tile">
-        <div class="cs-media" style="--tile-a:${a};--tile-b:${b}">
+        <div class="cs-media${containClass}" style="--tile-a:${a};--tile-b:${b}">
           <span class="cs-tag" style="--tag-color:${color}">${c.tag}</span>
           ${mediaInner}
           ${loupe}
