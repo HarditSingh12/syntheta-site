@@ -294,6 +294,8 @@
     .wrap{padding:0 20px;}
     .contact-sheet{grid-template-columns:1fr;}
     .stats-grid{grid-template-columns:1fr;}
+    .stats-grid.cols-3{grid-template-columns:1fr;}
+    .cols-3 .stat:last-child{border-right:none;}
     .stat{border-right:none !important;}
     .pipe-row{grid-template-columns:40px 1fr;}
     .pipe-row .pipe-tag{grid-column:2; margin-top:8px;}
@@ -302,9 +304,15 @@
     .brand{font-size:16px;}
     .nav-cta{gap:8px;}
     .nav-cta .btn-sm{padding:8px 10px; font-size:11px;}
+    .edge-code{animation: edge-scroll 22s linear infinite;}
+  }
+  @keyframes edge-scroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
   }
   @media (prefers-reduced-motion: reduce){
     .reveal, .reveal.in{transition:none; transform:none; opacity:1;}
+    .edge-code{animation:none;}
   }
 </style>
 </head>
