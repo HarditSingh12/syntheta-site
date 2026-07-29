@@ -322,8 +322,8 @@
       <a href="#samples">Samples</a>
     </nav>
     <div class="nav-cta">
-      <a href="mailto:jaygamertak@gmail.com?subject=Contact" class="btn btn-ghost btn-sm">Contact</a>
-      <a href="mailto:jaygamertak@gmail.com?subject=Beta%20access%20request" class="btn btn-primary btn-sm">Sign up for beta</a>
+      <a href="mailto:jaygamertak@gmail.com?subject=Syntheta%20AI%20%E2%80%94%20Question" class="btn btn-ghost btn-sm">Contact</a>
+      <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Sign up for beta</a>
     </div>
   </div>
 </header>
@@ -337,9 +337,9 @@
         <div class="reveal in">
           <div class="eyebrow">Data multiplication · physical AI</div>
           <h1>Shoot the frame once.<br>Print every condition<em>.</em></h1>
-          <p class="lede">Syntheta restores each capture for low light, then multiplies it through parallel branches — domain-gap mutation, neural re-synthesis, and a clean labeled baseline. Every output independently valid, fully labeled.</p>
+          <p class="lede">Syntheta restores each capture for low light, then multiplies it into several independently-labeled training variants — using <strong>Real2Robust (R2R)</strong> mutations, <strong>FunctaGen</strong> neural re-synthesis, and a clean passthrough baseline. Every output independently valid, fully labeled.</p>
           <div class="hero-ctas">
-            <a href="mailto:jaygamertak@gmail.com?subject=Beta%20access%20request" class="btn btn-primary">Sign up for beta</a>
+            <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary">Sign up for beta</a>
             <a href="#samples" class="btn btn-ghost">See the contact sheet →</a>
           </div>
         </div>
@@ -365,7 +365,7 @@
     <div class="wrap">
       <div class="reveal">
         <p class="about-text">
-          Real-world capture is slow and never covers every condition you need it to. Syntheta takes what you already shot, restores it for low light with an <strong>event-camera-style pipeline</strong>, then multiplies each frame through parallel branches — <strong>mutation</strong>, <strong>latent re-synthesis</strong>, and a clean labeled baseline — all pixel-aligned back to the original detection pass, all independently valid.
+          Real-world capture is slow and never covers every condition you need it to. Syntheta takes what you already shot, restores it for low light using <strong>NeuroDepth-T4</strong> — a restoration model that works the way an event camera does, tracking per-pixel brightness changes instead of raw color — then multiplies each frame into several outputs: <strong>R2R mutation</strong> (Real2Robust — simulated weather, lighting, and sensor noise), <strong>FunctaGen re-synthesis</strong> (a neural model that renders new in-between views), and a clean passthrough baseline. Person labels are detected once and carried forward frame-for-frame onto every output, so nothing has to be re-labeled by hand.
         </p>
       </div>
     </div>
@@ -381,7 +381,7 @@
           <div class="eyebrow">Pipeline · seven stages</div>
           <h2>One input directory.<br>Two detection passes.</h2>
         </div>
-        <p>The exact order the orchestrator runs, frame by frame. Branch B never ships empty — it falls back to Pass 1's tracks if fresh detection finds nobody.</p>
+        <p>Person-detection runs exactly twice per run — once on the original frames (shared by Branches A and C), once on FunctaGen's generated frames (Branch B). Branch B never ships empty: if that second pass finds nobody, it falls back to the first pass's labels.</p>
       </div>
 
       <div class="pipeline reveal in">
@@ -389,7 +389,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>01</div>
           <div class="pipe-main">
             <h3>Label once</h3>
-            <p>YOLOv8n-pose runs on the original frames and builds the shared <span class="mono">PersonTrackSet</span> that Branches A and C carry forward pixel-aligned.</p>
+            <p>YOLOv8n-pose detects people in the original frames and builds a track set that Branches A and C reuse frame-for-frame — no re-labeling needed.</p>
           </div>
           <div class="pipe-tag">detection</div>
         </div>
@@ -397,7 +397,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>02</div>
           <div class="pipe-main">
             <h3>NeuroDepth-T4 restoration</h3>
-            <p>EventCore V8.1 restores low-light frames. If restoration returns nothing or drops mean brightness below 30/255, the original frame is used as-is — tracked as <span class="mono">fallback_count</span> in the manifest.</p>
+            <p>EventCore V8.1 restores low-light frames using simulated per-pixel brightness events, the way an event camera would. If restoration fails or comes out too dark, the original frame is used instead — logged as a fallback in the run's manifest.</p>
           </div>
           <div class="pipe-tag">restoration</div>
         </div>
@@ -405,7 +405,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>03</div>
           <div class="pipe-main">
             <h3>Branch A — R2R mutation</h3>
-            <p>Domain-gap mutations applied to the restored frames. Labels carry forward from Pass 1, no re-detection needed.</p>
+            <p>Real2Robust (R2R) applies domain-gap mutations — simulated weather, lighting shifts, sensor noise — to the restored frames. Labels carry forward from stage 1, no re-detection needed.</p>
           </div>
           <div class="pipe-tag synthetic">synthetic</div>
         </div>
@@ -420,8 +420,8 @@
         <div class="pipe-row">
           <div class="pipe-num"><span class="fr">FRAME</span>05</div>
           <div class="pipe-main">
-            <h3>FunctaGen — INR slerp + render</h3>
-            <p>An implicit neural representation interpolates between captured frames' latents and renders novel intermediate views.</p>
+            <h3>FunctaGen — neural in-between frames</h3>
+            <p>An implicit neural representation (INR) — a small neural network trained to render a scene from any viewpoint — blends between two captured frames' learned latents (a "slerp," or spherical interpolation) to render new intermediate views.</p>
           </div>
           <div class="pipe-tag synthetic">synthesis</div>
         </div>
@@ -429,7 +429,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>06</div>
           <div class="pipe-main">
             <h3>Branch B — fresh detection + R2R</h3>
-            <p>A second YOLO pass runs on FunctaGen's output at a lower confidence threshold. Zero detections falls back to Pass 1's track set, so Branch B always ships labeled.</p>
+            <p>A second YOLO pass runs on FunctaGen's generated frames at a lower confidence threshold, then R2R mutates the result. Zero detections falls back to stage 1's labels, so Branch B always ships labeled.</p>
           </div>
           <div class="pipe-tag synthetic">synthetic</div>
         </div>
@@ -437,7 +437,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>07</div>
           <div class="pipe-main">
             <h3>Summary</h3>
-            <p>Every branch's manifest aggregates into one <span class="mono">pipeline_summary.json</span>.</p>
+            <p>Every branch's output manifest rolls up into one summary file for the whole run.</p>
           </div>
           <div class="pipe-tag util">manifest</div>
         </div>
@@ -487,7 +487,7 @@
         </div>
       </div>
       <div class="stats-grid reveal in">
-        <div class="stat"><div class="num">6 → 56</div><div class="lbl">frames out per run · 2.0× multiplier</div></div>
+        <div class="stat"><div class="num">6 → 56</div><div class="lbl">frames out per run · 9.3× multiplier</div></div>
         <div class="stat"><div class="num">2</div><div class="lbl">YOLO detection passes per input dir</div></div>
         <div class="stat"><div class="num">6</div><div class="lbl">suppression layers tuned in EventCore V8.1</div></div>
         <div class="stat"><div class="num">30/255</div><div class="lbl">brightness floor before dark-frame fallback</div></div>
@@ -524,8 +524,8 @@
     <div class="wrap">
       <div class="reveal">
         <h2>Get early access.</h2>
-        <p style="color:var(--paper-dim); font-size:15px; margin:0 0 30px;">Multiply your own frames.</p>
-        <a href="mailto:jaygamertak@gmail.com?subject=Beta%20access%20request" class="btn btn-primary">Sign up for beta</a>
+        <p style="color:var(--paper-dim); font-size:15px; margin:0 0 30px;">Multiply your own frames. Tell us what you're working on and we'll follow up by email.</p>
+        <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary">Sign up for beta</a>
       </div>
     </div>
   </section>
@@ -537,7 +537,7 @@
     <div>Syntheta AI — data multiplication for physical AI.</div>
     <div class="foot-links">
       <a href="#top">Back to top</a>
-      <a href="mailto:jaygamertak@gmail.com?subject=Beta%20access%20request">Sign up for beta</a>
+      <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener">Sign up for beta</a>
     </div>
   </div>
 </footer>
@@ -614,7 +614,7 @@ function fillEdgeCode(id, text){
   if (!el) return;
   el.textContent = Array(40).fill(text).join("   ·   ");
 }
-fillEdgeCode("edgeCode1", "6→56 FRAMES · 2.0× MULTIPLIER · 2 DETECTION PASSES · 3 CHAINED ENGINES");
+fillEdgeCode("edgeCode1", "6→56 FRAMES · 9.3× MULTIPLIER · 2 DETECTION PASSES · 3 CHAINED ENGINES");
 fillEdgeCode("edgeCode2", "SYNTHETA-AI · BRANCH A/B/C/D · PIXEL-ALIGNED LABELS · SYNTHETA-AI");
 
 /* scroll reveal */
