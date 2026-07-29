@@ -464,7 +464,7 @@
           <div class="pipe-num"><span class="fr">BRANCH</span>D</div>
           <div class="pipe-main">
             <h3>3D capture + human compositing <span class="mono" style="font-size:11px;color:var(--paper-dimmer);">— in progress</span></h3>
-            <p>SfM reconstruction, Gaussian-splat training, and SMPL-X human compositing into the rebuilt scene. Real, tested wiring — currently blocked on GPU/CUDA and licensed SMPL-X/AMASS assets in this build environment, so it stops honestly rather than faking a render.</p>
+            <p>SfM reconstruction is real and working — 1,110 points reconstructed from 35 camera poses on a test run. Gaussian-splat training and SMPL-X human compositing into the rebuilt scene are next, currently blocked on GPU/CUDA and licensed SMPL-X/AMASS assets in this build environment, so it stops honestly rather than faking a render.</p>
           </div>
           <div class="pipe-tag pending">pending</div>
         </div>
@@ -482,7 +482,7 @@
           <div class="eyebrow">Contact sheet</div>
           <h2>From the same six frames</h2>
         </div>
-        <p>All six tiles below are real output from an actual run.</p>
+        <p>All eight tiles below are real output from actual runs. The first six are from the same six frames; the last two are SfM reconstruction from a separate capture.</p>
       </div>
 
       <div class="light-table contact-sheet-wrap reveal in" style="background:var(--dark-3); border-color:var(--line);">
@@ -586,6 +586,8 @@ const TILES = [
   { title: "Branch C — passthrough",   tag: "frame 04",  kind: "util",      note: "28 frames · transferred labels",        src: "samples/branch-c-passthrough.jpg", fit: "contain" },
   { title: "FunctaGen — render check", tag: "frame 05",  kind: "synthetic", note: "epoch 100 · target vs. rendered",       src: "samples/functagen-render-check.jpg", fit: "contain" },
   { title: "Branch B — fresh detect",  tag: "frame 06",  kind: "synthetic", note: "YOLOv8n-pose · conf ≥ 0.1",             src: "samples/branch-b-detect.jpg" },
+  { title: "Branch D — SfM reconstruction", tag: "frame 07", kind: "util",  note: "1,110 points · 35 camera poses",       src: "samples/branch-d-sfm.png", fit: "contain" },
+  { title: "Branch D — point cloud",   tag: "frame 08",  kind: "util",      note: "SfM reconstruction, wide view",         src: "samples/branch-d-sfm-wide.png", fit: "contain" },
 ];
 
 function isVideo(src){ return /\.(mp4|webm|mov)(\?.*)?$/i.test(src || ""); }
