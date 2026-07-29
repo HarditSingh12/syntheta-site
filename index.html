@@ -249,8 +249,10 @@
 
   /* ---------- stats ---------- */
   .stats-grid{display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); border-radius:4px; overflow:hidden;}
+  .stats-grid.cols-3{grid-template-columns:repeat(3,1fr);}
   .stat{padding:28px 24px; border-right:1px solid var(--line); border-bottom:1px solid var(--line);}
   .stat:nth-child(4n){border-right:none;}
+  .cols-3 .stat:last-child{border-right:none;}
   .stat .num{font-family:'Big Shoulders Display', sans-serif; font-size:32px; font-weight:700; color:var(--amber); line-height:1;}
   .stat .lbl{margin-top:9px; font-family:'Space Mono', monospace; font-size:11px; color:var(--paper-dimmer); line-height:1.5;}
 
@@ -356,6 +358,23 @@
         </video>
         <div class="sprocket-rail"></div>
         <div class="edge-code on-panel" id="edgeCode1"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WHY ================= -->
+  <section id="why" class="tight">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="eyebrow">Why this matters</div>
+          <h2>Capture is the bottleneck.</h2>
+        </div>
+      </div>
+      <div class="stats-grid cols-3 reveal in">
+        <div class="stat"><div class="num">Hours</div><div class="lbl">to shoot one condition by hand</div></div>
+        <div class="stat"><div class="num">Manual</div><div class="lbl">re-labeling every new variant, normally</div></div>
+        <div class="stat"><div class="num">9.3×</div><div class="lbl">frames out per shoot, already labeled</div></div>
       </div>
     </div>
   </section>
