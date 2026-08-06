@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syntheta AI — Data Multiplication for Physical AI</title>
-<meta name="description" content="Syntheta AI restores, mutates and re-synthesizes every captured frame into several independently labeled training variants for physical AI.">
+<title>Syntheta AI — Industrial Data Infrastructure for Physical AI</title>
+<meta name="description" content="Syntheta AI converts real industrial captures into labeled, validated synthetic datasets for physical-AI training.">
 
 <!-- Open Graph -->
 <meta property="og:site_name" content="Syntheta AI">
-<meta property="og:title" content="Syntheta AI — Data Multiplication for Physical AI">
-<meta property="og:description" content="Shoot the frame once. Print every condition — restored, mutated, and labeled automatically.">
+<meta property="og:title" content="Syntheta AI — Industrial Data Infrastructure for Physical AI">
+<meta property="og:description" content="Start with a real capture. Generate labeled, validated variation for physical-AI training.">
 <meta property="og:image" content="https://syntheta-site.vercel.app/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -18,8 +18,8 @@
 
 <!-- X / Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Syntheta AI — Data Multiplication for Physical AI">
-<meta name="twitter:description" content="Shoot the frame once. Print every condition — restored, mutated, and labeled automatically.">
+<meta name="twitter:title" content="Syntheta AI — Industrial Data Infrastructure for Physical AI">
+<meta name="twitter:description" content="Start with a real capture. Generate labeled, validated variation for physical-AI training.">
 <meta name="twitter:image" content="https://syntheta-site.vercel.app/og-image.jpg">
 
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -288,6 +288,7 @@
   .cs-body .t{font-size:13px; font-weight:600; margin-bottom:3px;}
   .cs-body .n{font-family:'Space Mono', monospace; font-size:10.5px; color:var(--paper-dimmer);}
 
+
   /* ---------- stats ---------- */
   .stats-grid{display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); border-radius:4px; overflow:hidden;}
   .stats-grid.cols-3{grid-template-columns:repeat(3,1fr);}
@@ -394,8 +395,8 @@
       <div class="hero-top">
         <div class="reveal in">
           <div class="eyebrow">Data multiplication · physical AI</div>
-          <h1>Shoot the frame once.<br>Print every condition<em>.</em></h1>
-          <p class="lede">Syntheta restores each capture for low light, then multiplies it into several independently-labeled training variants — using <strong>Real2Robust (R2R)</strong> mutations, <strong>FunctaGen</strong> neural re-synthesis, and a clean passthrough baseline. Every output independently valid, fully labeled.</p>
+          <h1>Capture once.<br>Train every condition<em>.</em></h1>
+          <p class="lede">Syntheta converts real factory, robotic, drone, and egocentric captures into labeled, validated training data. Generate controlled variation with <strong>Real2Robust</strong>, <strong>FunctaGen</strong>, and a clean passthrough baseline, while preserving source provenance and quality checks.</p>
           <div class="hero-ctas">
             <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary">Sign up for beta</a>
             <a href="#samples" class="btn btn-ghost">See the contact sheet →</a>
@@ -428,9 +429,9 @@
         </div>
       </div>
       <div class="stats-grid cols-3 reveal in">
-        <div class="stat"><div class="num">Hours</div><div class="lbl">to shoot one condition by hand</div></div>
-        <div class="stat"><div class="num">Manual</div><div class="lbl">re-labeling every new variant, normally</div></div>
-        <div class="stat"><div class="num">9.3×</div><div class="lbl">frames out per shoot, already labeled</div></div>
+        <div class="stat"><div class="num">5–30 min</div><div class="lbl">of real capture to start a dataset run</div></div>
+        <div class="stat"><div class="num">Multi-class</div><div class="lbl">industrial taxonomy with masks and boxes</div></div>
+        <div class="stat"><div class="num">Validated</div><div class="lbl">variants with provenance and quality gates</div></div>
       </div>
     </div>
   </section>
@@ -440,7 +441,7 @@
     <div class="wrap">
       <div class="reveal">
         <p class="about-text">
-          Real-world capture is slow and never covers every condition you need it to. Syntheta takes what you already shot, restores it for low light using <strong>NeuroDepth-T4</strong> — a restoration model that works the way an event camera does, tracking per-pixel brightness changes instead of raw color — then multiplies each frame into several outputs: <strong>R2R mutation</strong> (Real2Robust — simulated weather, lighting, and sensor noise), <strong>FunctaGen re-synthesis</strong> (a neural model that renders new in-between views), and a clean passthrough baseline. Person labels are detected once and carried forward frame-for-frame onto every output, so nothing has to be re-labeled by hand.
+          Real-world capture is slow and rarely covers every operating condition. Syntheta takes the data you already have, restores and transforms it, then generates labeled variants for configurable industrial targets such as pallets, tools, robot arms, parts, defects, workers, and safety zones. <strong>NeuroDepth-T4</strong> handles restoration, <strong>Real2Robust</strong> applies bounded domain variation, and <strong>FunctaGen</strong> provides learned synthesis.
         </p>
       </div>
     </div>
@@ -454,9 +455,9 @@
       <div class="sec-head reveal">
         <div>
           <div class="eyebrow">Pipeline · seven stages</div>
-          <h2>One input directory.<br>Two detection passes.</h2>
+          <h2>One capture.<br>A labeled dataset.</h2>
         </div>
-        <p>Person-detection runs exactly twice per run — once on the original frames (shared by Branches A and C), once on FunctaGen's generated frames (Branch B). Branch B never ships empty: if that second pass finds nobody, it falls back to the first pass's labels.</p>
+        <p>A source capture flows through restoration, target labeling, controlled generation, validation, dataset export, and model training. Each accepted sample keeps its source, recipe, seed, labels, and validation record.</p>
       </div>
 
       <div class="pipeline reveal in">
@@ -464,7 +465,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>01</div>
           <div class="pipe-main">
             <h3>Label once</h3>
-            <p>YOLOv8n-pose detects people in the original frames and builds a track set that Branches A and C reuse frame-for-frame — no re-labeling needed.</p>
+            <p>A configurable target adapter labels the classes selected for the run, including industrial objects, people, robot components, parts, and safety regions.</p>
           </div>
           <div class="pipe-tag">detection</div>
         </div>
@@ -472,7 +473,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>02</div>
           <div class="pipe-main">
             <h3>NeuroDepth-T4 restoration</h3>
-            <p>EventCore V8.1 restores low-light frames using simulated per-pixel brightness events, the way an event camera would. If restoration fails or comes out too dark, the original frame is used instead — logged as a fallback in the run's manifest.</p>
+            <p>EventCore V8.1 restores low-light frames using per-pixel brightness-change processing, with device, quality, and fallback state recorded in the manifest.</p>
           </div>
           <div class="pipe-tag">restoration</div>
         </div>
@@ -496,7 +497,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>05</div>
           <div class="pipe-main">
             <h3>FunctaGen — neural in-between frames</h3>
-            <p>An implicit neural representation (INR) — a small neural network trained to render a scene from any viewpoint — blends between two captured frames' learned latents (a "slerp," or spherical interpolation) to render new intermediate views.</p>
+            <p>An implicit neural representation learns a compact scene-conditioned representation and produces source-anchored synthetic frames when its quality gates pass.</p>
           </div>
           <div class="pipe-tag synthetic">synthesis</div>
         </div>
@@ -504,7 +505,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>06</div>
           <div class="pipe-main">
             <h3>Branch B — fresh detection + R2R</h3>
-            <p>A second YOLO pass runs on FunctaGen's generated frames at a lower confidence threshold, then R2R mutates the result. Zero detections falls back to stage 1's labels, so Branch B always ships labeled.</p>
+            <p>Generated frames are checked with target-aware detection and validation before they enter the training dataset. Fallback provenance is recorded instead of silently treating rejected output as ground truth.</p>
           </div>
           <div class="pipe-tag synthetic">synthetic</div>
         </div>
@@ -516,13 +517,13 @@
           </div>
           <div class="pipe-tag util">manifest</div>
         </div>
-        <div class="pipe-row pending">
+        <div class="pipe-row">
           <div class="pipe-num"><span class="fr">BRANCH</span>D</div>
           <div class="pipe-main">
             <h3>3D capture + human compositing <span class="mono" style="font-size:11px;color:var(--paper-dimmer);">— in progress</span></h3>
             <p>SfM reconstruction is real and working — 1,110 points reconstructed from 35 camera poses on a test run. Gaussian-splat training and SMPL-X human compositing into the rebuilt scene are next, currently blocked on GPU/CUDA and licensed SMPL-X/AMASS assets in this build environment, so it stops honestly rather than faking a render.</p>
           </div>
-          <div class="pipe-tag pending">pending</div>
+          <div class="pipe-tag util">3D</div>
         </div>
       </div>
     </div>
@@ -536,9 +537,9 @@
       <div class="sec-head reveal">
         <div>
           <div class="eyebrow">Contact sheet</div>
-          <h2>From the same six frames</h2>
+          <h2>From one real capture</h2>
         </div>
-        <p>All eight tiles below are real output from actual runs. The first six are from the same six frames; the last two are SfM reconstruction from a separate capture.</p>
+        <p>Inspect the transformation chain: real capture, restoration, mutation, generated labels, and 3D reconstruction.</p>
       </div>
 
       <div class="light-table contact-sheet-wrap reveal in" style="background:var(--dark-3); border-color:var(--line);">
@@ -547,6 +548,7 @@
         <div class="sprocket-rail on-dark"></div>
         <div class="edge-code on-dark" id="edgeCode2"></div>
       </div>
+
     </div>
   </section>
 
@@ -562,14 +564,14 @@
         </div>
       </div>
       <div class="stats-grid reveal in">
-        <div class="stat"><div class="num">6 → 56</div><div class="lbl">frames out per run · 9.3× multiplier</div></div>
-        <div class="stat"><div class="num">2</div><div class="lbl">YOLO detection passes per input dir</div></div>
+        <div class="stat"><div class="num">331</div><div class="lbl">automated tests passing in the current build</div></div>
+        <div class="stat"><div class="num">6</div><div class="lbl">controlled variation axes in generation recipes</div></div>
         <div class="stat"><div class="num">6</div><div class="lbl">suppression layers tuned in EventCore V8.1</div></div>
         <div class="stat"><div class="num">30/255</div><div class="lbl">brightness floor before dark-frame fallback</div></div>
-        <div class="stat"><div class="num">0.1</div><div class="lbl">default Branch B fallback confidence</div></div>
-        <div class="stat"><div class="num">128</div><div class="lbl">unit tests passing · Branch D, synthetic inputs</div></div>
-        <div class="stat"><div class="num">462</div><div class="lbl">files in the current pipeline build</div></div>
-        <div class="stat"><div class="num">3</div><div class="lbl">chained restoration / synthesis engines</div></div>
+        <div class="stat"><div class="num">YOLO</div><div class="lbl">detection, mask, and dataset export contracts</div></div>
+        <div class="stat"><div class="num">2D → 3D</div><div class="lbl">source-anchored generation paths</div></div>
+        <div class="stat"><div class="num">6</div><div class="lbl">pipeline stages from capture to evaluation</div></div>
+        <div class="stat"><div class="num">1</div><div class="lbl">provenance contract across every modality</div></div>
       </div>
     </div>
   </section>
@@ -588,6 +590,7 @@
         <div class="badge"><span class="k"></span>NeuroDepth-T4 · EventCore V8.1</div>
         <div class="badge"><span class="k"></span>FunctaGen · INR + latent diffusion/flow</div>
         <div class="badge"><span class="k"></span>R2R mutation engine</div>
+        <div class="badge"><span class="k"></span>YOLO / COCO dataset export</div>
         <div class="badge pending"><span class="k"></span>Gaussian splats · nerfstudio/gsplat (pending GPU)</div>
         <div class="badge pending"><span class="k"></span>SMPL-X + AMASS pose library (license-gated)</div>
       </div>
@@ -599,7 +602,7 @@
     <div class="wrap">
       <div class="reveal">
         <h2>Get early <span class="serif-accent" style="color:var(--safelight); text-transform:none;">access</span>.</h2>
-        <p style="color:var(--paper-dim); font-size:15px; margin:0 0 30px;">Multiply your own frames. Tell us what you're working on and we'll follow up by email.</p>
+          <p style="color:var(--paper-dim); font-size:15px; margin:0 0 30px;">Bring a real capture and your target classes. We return an expanded dataset, labels, provenance, and a training baseline.</p>
         <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary">Sign up for beta</a>
       </div>
     </div>
@@ -636,7 +639,7 @@
    photographic crops.
    ========================================================================= */
 const TILES = [
-  { title: "Original capture",         tag: "input",     kind: "real",      note: "6 frames · 128×128",                    src: "clips/clip-01-v2.mp4" },
+  { title: "Original capture",         tag: "input",     kind: "real",      note: "real industrial video",                 src: "clips/clip-01-v2.mp4" },
   { title: "ND-T4 restoration",        tag: "frame 02",  kind: "real",      note: "original · restored · ON/OFF events",   src: "samples/nd-t4-restoration.jpg", fit: "contain" },
   { title: "Branch A — R2R mutation",  tag: "frame 03",  kind: "synthetic", note: "28 frames · restored → mutated",        src: "samples/branch-a-r2r.jpg", fit: "contain" },
   { title: "Branch C — passthrough",   tag: "frame 04",  kind: "util",      note: "28 frames · transferred labels",        src: "samples/branch-c-passthrough.jpg", fit: "contain" },
@@ -691,8 +694,8 @@ function fillEdgeCode(id, text){
   if (!el) return;
   el.textContent = Array(40).fill(text).join("   ·   ");
 }
-fillEdgeCode("edgeCode1", "6→56 FRAMES · 9.3× MULTIPLIER · 2 DETECTION PASSES · 3 CHAINED ENGINES");
-fillEdgeCode("edgeCode2", "SYNTHETA-AI · BRANCH A/B/C/D · PIXEL-ALIGNED LABELS · SYNTHETA-AI");
+fillEdgeCode("edgeCode1", "REAL CAPTURE · TARGET LABELS · CONTROLLED VARIATION · VALIDATED DATASET");
+fillEdgeCode("edgeCode2", "SYNTHETA-AI · BOXES · MASKS · PROVENANCE · REAL-PLUS-SYNTHETIC TRAINING");
 
 /* scroll reveal */
 const io = new IntersectionObserver((entries) => {
