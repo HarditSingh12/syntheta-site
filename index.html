@@ -396,7 +396,7 @@
         <div class="reveal in">
           <div class="eyebrow">Data multiplication · physical AI</div>
           <h1>Capture once.<br>Train every condition<em>.</em></h1>
-          <p class="lede">Syntheta converts real factory, robotic, drone, and egocentric captures into labeled, validated training data. Generate controlled variation with <strong>Real2Robust</strong>, <strong>FunctaGen</strong>, and a clean passthrough baseline, while preserving source provenance and quality checks.</p>
+          <p class="lede">Syntheta helps physical-AI teams get more useful training experience from every real capture. Turn factory, robot, drone, and sensor footage into trusted data for the situations that are hardest to collect.</p>
           <div class="hero-ctas">
             <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary">Request beta access</a>
             <a href="#samples" class="btn btn-ghost">See the contact sheet →</a>
@@ -441,7 +441,7 @@
     <div class="wrap">
       <div class="reveal">
         <p class="about-text">
-          Real-world capture is slow and rarely covers every operating condition. Syntheta takes the data you already have, restores and transforms it, then generates labeled variants for configurable industrial targets such as pallets, tools, robot arms, parts, defects, workers, and safety zones. <strong>NeuroDepth-T4</strong> handles restoration, <strong>Real2Robust</strong> applies bounded domain variation, and <strong>FunctaGen</strong> provides learned synthesis.
+          Real-world capture is slow and rarely covers every operating condition. Syntheta takes the data you already have and creates useful, labeled variations for low light, motion, occlusion, new viewpoints, and difficult edge cases. The result stays tied to the original scene, so your team can inspect it, trust it, and put it to work.
         </p>
       </div>
     </div>
@@ -465,7 +465,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>01</div>
           <div class="pipe-main">
             <h3>Label once</h3>
-            <p>A configurable target adapter labels the classes selected for the run, including industrial objects, people, robot components, parts, and safety regions.</p>
+            <p>Start with the objects and situations your model needs to understand, from pallets and parts to people and safety zones.</p>
           </div>
           <div class="pipe-tag">detection</div>
         </div>
@@ -473,7 +473,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>02</div>
           <div class="pipe-main">
             <h3>NeuroDepth-T4 restoration</h3>
-            <p>EventCore V8.1 restores low-light frames using per-pixel brightness-change processing, with device, quality, and fallback state recorded in the manifest.</p>
+            <p>Recover detail from difficult footage so your training set is useful in dim, fast-moving, and changing environments.</p>
           </div>
           <div class="pipe-tag">restoration</div>
         </div>
@@ -481,7 +481,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>03</div>
           <div class="pipe-main">
             <h3>Branch A — R2R mutation</h3>
-            <p>Real2Robust (R2R) applies domain-gap mutations — simulated weather, lighting shifts, sensor noise — to the restored frames. Labels carry forward from stage 1, no re-detection needed.</p>
+            <p>Create controlled changes such as lighting shifts, blur, weather, noise, and occlusion while keeping the scene and labels consistent.</p>
           </div>
           <div class="pipe-tag synthetic">synthetic</div>
         </div>
@@ -489,15 +489,15 @@
           <div class="pipe-num"><span class="fr">FRAME</span>04</div>
           <div class="pipe-main">
             <h3>Branch C — passthrough</h3>
-            <p>The clean, un-mutated baseline — restored frames copied through with the same carried-forward labels.</p>
+            <p>Keep a clean version of the original data so every experiment has a clear real-world reference.</p>
           </div>
           <div class="pipe-tag util">baseline</div>
         </div>
         <div class="pipe-row">
           <div class="pipe-num"><span class="fr">FRAME</span>05</div>
           <div class="pipe-main">
-            <h3>FunctaGen — neural in-between frames</h3>
-            <p>An implicit neural representation learns a compact scene-conditioned representation and produces source-anchored synthetic frames when its quality gates pass.</p>
+            <h3>Geometry-conditioned generation</h3>
+            <p>Generate fresh appearances and camera views that still look like the environment your model will actually enter.</p>
           </div>
           <div class="pipe-tag synthetic">synthesis</div>
         </div>
@@ -505,7 +505,7 @@
           <div class="pipe-num"><span class="fr">FRAME</span>06</div>
           <div class="pipe-main">
             <h3>Branch B — fresh detection + R2R</h3>
-            <p>Generated frames are checked with target-aware detection and validation before they enter the training dataset. Fallback provenance is recorded instead of silently treating rejected output as ground truth.</p>
+            <p>Every new frame is checked before it reaches training. Weak or inconsistent results are separated out instead of quietly lowering model quality.</p>
           </div>
           <div class="pipe-tag synthetic">synthetic</div>
         </div>
@@ -520,8 +520,8 @@
         <div class="pipe-row">
           <div class="pipe-num"><span class="fr">BRANCH</span>D</div>
           <div class="pipe-main">
-            <h3>3D capture + human compositing <span class="mono" style="font-size:11px;color:var(--paper-dimmer);">— in progress</span></h3>
-            <p>SfM reconstruction is real and working — 1,110 points reconstructed from 35 camera poses on a test run. Gaussian-splat training and SMPL-X human compositing into the rebuilt scene are next, currently blocked on GPU/CUDA and licensed SMPL-X/AMASS assets in this build environment, so it stops honestly rather than faking a render.</p>
+            <h3>Spatial reconstruction + world state</h3>
+            <p>Turn multi-view captures into a spatial view of the scene, then use it to create new training views and action-aware sequences.</p>
           </div>
           <div class="pipe-tag util">3D</div>
         </div>
@@ -564,13 +564,13 @@
         </div>
       </div>
       <div class="stats-grid reveal in">
-        <div class="stat"><div class="num">331</div><div class="lbl">automated tests passing in the current build</div></div>
-        <div class="stat"><div class="num">6</div><div class="lbl">controlled variation axes in generation recipes</div></div>
-        <div class="stat"><div class="num">6</div><div class="lbl">suppression layers tuned in EventCore V8.1</div></div>
-        <div class="stat"><div class="num">30/255</div><div class="lbl">brightness floor before dark-frame fallback</div></div>
-        <div class="stat"><div class="num">YOLO</div><div class="lbl">detection, mask, and dataset export contracts</div></div>
-        <div class="stat"><div class="num">2D → 3D</div><div class="lbl">source-anchored generation paths</div></div>
-        <div class="stat"><div class="num">6</div><div class="lbl">pipeline stages from capture to evaluation</div></div>
+        <div class="stat"><div class="num">500</div><div class="lbl">automated tests passing in the current build</div></div>
+        <div class="stat"><div class="num">1 → many</div><div class="lbl">real capture expanded into controlled training experience</div></div>
+        <div class="stat"><div class="num">RGB + depth</div><div class="lbl">appearance and spatial outputs from aligned captures</div></div>
+        <div class="stat"><div class="num">Multi-step</div><div class="lbl">world-model rollouts with motion and sensor state</div></div>
+        <div class="stat"><div class="num">YOLO / COCO</div><div class="lbl">train-ready detection and segmentation exports</div></div>
+        <div class="stat"><div class="num">Real → real+</div><div class="lbl">held-out evaluation for training-data utility</div></div>
+        <div class="stat"><div class="num">Fail closed</div><div class="lbl">invalid labels and geometry stay out of exports</div></div>
         <div class="stat"><div class="num">1</div><div class="lbl">provenance contract across every modality</div></div>
       </div>
     </div>
@@ -588,11 +588,11 @@
       <div class="built-on-grid reveal in">
         <div class="badge"><span class="k"></span>YOLOv8n-pose</div>
         <div class="badge"><span class="k"></span>NeuroDepth-T4 · EventCore V8.1</div>
-        <div class="badge"><span class="k"></span>FunctaGen · INR + latent diffusion/flow</div>
+        <div class="badge"><span class="k"></span>Geometry-conditioned generation</div>
         <div class="badge"><span class="k"></span>R2R mutation engine</div>
         <div class="badge"><span class="k"></span>YOLO / COCO dataset export</div>
-        <div class="badge pending"><span class="k"></span>Gaussian splats · nerfstudio/gsplat (pending GPU)</div>
-        <div class="badge pending"><span class="k"></span>SMPL-X + AMASS pose library (license-gated)</div>
+        <div class="badge"><span class="k"></span>New viewpoints from real scenes</div>
+        <div class="badge"><span class="k"></span>Future-state prediction for physical AI</div>
       </div>
     </div>
   </section>
@@ -612,7 +612,7 @@
 
 <footer>
   <div class="wrap foot-row">
-    <div>Syntheta AI — data multiplication for physical AI.</div>
+    <div>Syntheta AI — anchored training infrastructure for physical AI.</div>
     <div class="foot-links">
       <a href="#top">Back to top</a>
       <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener">Sign up for beta</a>
@@ -639,11 +639,11 @@
    photographic crops.
    ========================================================================= */
 const TILES = [
-  { title: "Original capture",         tag: "input",     kind: "real",      note: "real industrial video",                 src: "clips/clip-01-v2.mp4" },
+  { title: "Original forklift capture", tag: "input",     kind: "real",      note: "real industrial video · 2× preview",      src: "clips/factory_video.mp4", speed: 2 },
   { title: "ND-T4 restoration",        tag: "frame 02",  kind: "real",      note: "original · restored · ON/OFF events",   src: "samples/nd-t4-restoration.jpg", fit: "contain" },
   { title: "Branch A — R2R mutation",  tag: "frame 03",  kind: "synthetic", note: "28 frames · restored → mutated",        src: "samples/branch-a-r2r.jpg", fit: "contain" },
   { title: "Branch C — passthrough",   tag: "frame 04",  kind: "util",      note: "28 frames · transferred labels",        src: "samples/branch-c-passthrough.jpg", fit: "contain" },
-  { title: "FunctaGen — render check", tag: "frame 05",  kind: "synthetic", note: "epoch 100 · target vs. rendered",       src: "samples/functagen-render-check.jpg", fit: "contain" },
+  { title: "World-model evaluation", tag: "frame 05",  kind: "util", note: "training loss and multi-step rollout error",       src: "samples/forklift_lstm_report_metrics.png", fit: "contain" },
   { title: "Branch B — fresh detect",  tag: "frame 06",  kind: "synthetic", note: "YOLOv8n-pose · conf ≥ 0.1",             src: "samples/branch-b-detect.jpg" },
   { title: "Branch D — SfM reconstruction", tag: "frame 07", kind: "util",  note: "1,110 points · 35 camera poses",       src: "samples/branch-d-sfm.png", fit: "contain" },
   { title: "Branch D — point cloud",   tag: "frame 08",  kind: "util",      note: "SfM reconstruction, wide view",         src: "samples/branch-d-sfm-wide.png", fit: "contain" },
@@ -664,7 +664,7 @@ function renderTiles(){
     const [a,b] = palettes[i % palettes.length];
     let mediaInner;
     if (c.src && isVideo(c.src)) {
-      mediaInner = `<video src="${c.src}" muted loop playsinline autoplay></video>`;
+      mediaInner = `<video src="${c.src}" muted loop playsinline autoplay${c.speed ? ` data-speed="${c.speed}"` : ""}></video>`;
     } else if (c.src) {
       mediaInner = `<img src="${c.src}" alt="${c.title}">`;
     } else {
@@ -687,6 +687,10 @@ function renderTiles(){
   }).join("");
 }
 renderTiles();
+document.querySelectorAll("video[data-speed]").forEach(video => {
+  video.playbackRate = Number(video.dataset.speed) || 1;
+  video.play().catch(() => {});
+});
 
 /* edge-code strips */
 function fillEdgeCode(id, text){
