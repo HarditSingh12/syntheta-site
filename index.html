@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Syntheta AI — Industrial Data Infrastructure for Physical AI</title>
 <meta name="description" content="Syntheta AI converts real industrial captures into labeled, validated synthetic datasets for physical-AI training.">
+<link rel="canonical" href="https://synthetaai.com/">
+<meta name="robots" content="index, follow">
 
 <!-- Open Graph -->
 <meta property="og:site_name" content="Syntheta AI">
@@ -25,6 +27,8 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="favicon-180.png">
+<script defer data-domain="synthetaai.com" src="https://plausible.io/js/script.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Syntheta AI","url":"https://synthetaai.com/","logo":"https://synthetaai.com/favicon-180.png","email":"ctoshashank@synthetaai.com","description":"Trusted training data infrastructure for physical AI."}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@1,14..32,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -144,6 +148,7 @@
     font-size:14px; text-decoration:none; color:var(--paper-dim);
     transition:color .2s ease; position:relative; padding-bottom:3px;
   }
+  :where(a,button):focus-visible{outline:2px solid var(--safelight);outline-offset:4px;}
   .nav-links a::after{
     content:""; position:absolute; left:0; right:100%; bottom:0; height:1px;
     background:var(--safelight); transition:right .22s ease;
@@ -192,6 +197,17 @@
   }
   .hero-panel{margin-top:0;}
   .hero-panel video{width:100%; display:block; background:#000;}
+  .proof-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:24px;}
+  .proof-card{border:1px solid var(--line);background:var(--dark-3);}
+  .proof-card img{display:block;width:100%;height:240px;object-fit:cover;background:#080909;}
+  .proof-card .proof-copy{padding:18px 20px 20px;}
+  .proof-card .proof-copy strong{display:block;font-size:16px;margin-bottom:7px;}
+  .proof-card .proof-copy span{color:var(--ink-dim);font-size:13px;line-height:1.55;}
+  .steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);margin-top:24px;}
+  .step{background:var(--dark-3);padding:22px 20px;min-height:145px;}
+  .step-number{font:12px 'Space Mono',monospace;color:var(--safelight);margin-bottom:22px;}
+  .step strong{display:block;margin-bottom:7px;font-size:15px;}
+  .step span{color:var(--ink-dim);font-size:13px;line-height:1.5;}
   .hero-panel .frame-label{
     display:flex; justify-content:space-between; align-items:center;
     padding:12px 20px;
@@ -327,6 +343,8 @@
   /* ---------- responsive ---------- */
   @media (max-width:980px){
     .cs-tile{flex-basis:calc(50% - 1px);}
+    .proof-grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:repeat(2,minmax(0,1fr));}
     .stats-grid{grid-template-columns:repeat(2,1fr);}
     .stat:nth-child(4n){border-right:1px solid var(--line);}
     .stat:nth-child(2n){border-right:none;}
@@ -335,6 +353,7 @@
   @media (max-width:560px){
     .wrap{padding:0 20px;}
     .cs-tile{flex-basis:100%;}
+    .steps{grid-template-columns:1fr;}
     .stats-grid{grid-template-columns:1fr;}
     .stats-grid.cols-3{grid-template-columns:1fr;}
     .cols-3 .stat:last-child{border-right:none;}
@@ -372,8 +391,8 @@
       <a href="#samples">Samples</a>
     </nav>
     <div class="nav-cta">
-      <a href="mailto:jaygamertak@gmail.com?subject=Syntheta%20AI%20%E2%80%94%20Question" class="btn btn-ghost btn-sm">Contact</a>
-      <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary btn-sm">Request beta access</a>
+        <a href="mailto:ctoshashank@synthetaai.com?subject=Syntheta%20AI%20%E2%80%94%20Question" class="btn btn-ghost btn-sm" data-analytics="contact">Contact</a>
+      <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary btn-sm" data-analytics="beta-request">Request beta access</a>
     </div>
   </div>
 </header>
@@ -389,7 +408,7 @@
           <h1>Capture once.<br>Train every condition<em>.</em></h1>
           <p class="lede">Syntheta helps physical-AI teams get more useful training experience from every real capture. Turn factory, robot, drone, and sensor footage into trusted data for the situations that are hardest to collect.</p>
           <div class="hero-ctas">
-            <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary">Request beta access</a>
+            <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary" data-analytics="beta-request">Request beta access</a>
             <a href="#samples" class="btn btn-ghost">See the contact sheet →</a>
           </div>
         </div>
@@ -401,7 +420,7 @@
           <span class="t"><span class="dot"></span>Original capture · clip-01-v2 · 10s</span>
           <span class="t mono">1072 × 480</span>
         </div>
-        <video autoplay muted loop playsinline>
+        <video autoplay muted loop playsinline preload="metadata" poster="samples/nd-t4-restoration.webp">
           <source src="clips/clip-01-v2.mp4" type="video/mp4">
         </video>
         <div class="sprocket-rail"></div>
@@ -523,6 +542,28 @@
   <hr class="rule">
 
   <!-- ================= SAMPLES / CONTACT SHEET ================= -->
+  <section id="how-it-works">
+    <div class="wrap">
+      <div class="section-head reveal"><div class="kicker">How it works</div><h2>One capture. A larger training set.</h2></div>
+      <div class="steps reveal">
+        <div class="step"><div class="step-number">01</div><strong>Bring a real capture</strong><span>Factory, robot, drone, or synchronized sensor data.</span></div>
+        <div class="step"><div class="step-number">02</div><strong>Define the conditions</strong><span>Choose lighting, motion, occlusion, views, and sensor variation.</span></div>
+        <div class="step"><div class="step-number">03</div><strong>Generate and validate</strong><span>Produce new samples while carrying labels and provenance forward.</span></div>
+        <div class="step"><div class="step-number">04</div><strong>Train on what matters</strong><span>Export a ready dataset and measure utility on held-out real data.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="benchmarks">
+    <div class="wrap">
+      <div class="section-head reveal"><div class="kicker">Proof in the loop</div><h2>Measured on real captures.</h2></div>
+      <div class="proof-grid reveal">
+        <article class="proof-card"><img src="samples/forklift_lstm_report_metrics.webp" loading="lazy" decoding="async" alt="World-model benchmark report showing visual and sensor rollout metrics"><div class="proof-copy"><strong>World-model rollout evaluation</strong><span>Visual prediction and sensor error measured across multiple future steps.</span></div></article>
+        <article class="proof-card"><img src="samples/branch-b-detect.webp" loading="lazy" decoding="async" alt="Industrial scene with a validated object detection box"><div class="proof-copy"><strong>Detection-ready output</strong><span>Generated frames retain usable object labels for downstream training.</span></div></article>
+      </div>
+    </div>
+  </section>
+
   <section id="samples">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -594,7 +635,7 @@
       <div class="reveal">
         <h2>Get early <span class="serif-accent" style="color:var(--safelight); text-transform:none;">access</span>.</h2>
           <p style="color:var(--paper-dim); font-size:15px; margin:0 0 30px;">Bring a real capture and your target classes. We return an expanded dataset, labels, provenance, and a training baseline.</p>
-        <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary">Sign up for beta</a>
+        <a href="https://forms.gle/CumqUy96U7myvJM66" target="_blank" rel="noopener" class="btn btn-primary" data-analytics="beta-request">Sign up for beta</a>
       </div>
     </div>
   </section>
@@ -631,13 +672,13 @@
    ========================================================================= */
 const TILES = [
   { title: "Original forklift capture", tag: "input",     kind: "real",      note: "real industrial video · 2× preview",      src: "clips/factory_video.mp4", speed: 2 },
-  { title: "ND-T4 restoration",        tag: "frame 02",  kind: "real",      note: "original · restored · ON/OFF events",   src: "samples/nd-t4-restoration.jpg", fit: "contain" },
-  { title: "Branch A — R2R mutation",  tag: "frame 03",  kind: "synthetic", note: "28 frames · restored → mutated",        src: "samples/branch-a-r2r.jpg", fit: "contain" },
-  { title: "Branch C — passthrough",   tag: "frame 04",  kind: "util",      note: "28 frames · transferred labels",        src: "samples/branch-c-passthrough.jpg", fit: "contain" },
-  { title: "World-model evaluation", tag: "frame 05",  kind: "util", note: "training loss and multi-step rollout error",       src: "samples/forklift_lstm_report_metrics.png", fit: "contain" },
-  { title: "Branch B — fresh detect",  tag: "frame 06",  kind: "synthetic", note: "YOLOv8n-pose · conf ≥ 0.1",             src: "samples/branch-b-detect.jpg" },
-  { title: "Branch D — SfM reconstruction", tag: "frame 07", kind: "util",  note: "1,110 points · 35 camera poses",       src: "samples/branch-d-sfm.png", fit: "contain" },
-  { title: "Branch D — point cloud",   tag: "frame 08",  kind: "util",      note: "SfM reconstruction, wide view",         src: "samples/branch-d-sfm-wide.png", fit: "contain" },
+  { title: "ND-T4 restoration",        tag: "frame 02",  kind: "real",      note: "original · restored · ON/OFF events",   src: "samples/nd-t4-restoration.webp", fit: "contain" },
+  { title: "Branch A — R2R mutation",  tag: "frame 03",  kind: "synthetic", note: "28 frames · restored → mutated",        src: "samples/branch-a-r2r.webp", fit: "contain" },
+  { title: "Branch C — passthrough",   tag: "frame 04",  kind: "util",      note: "28 frames · transferred labels",        src: "samples/branch-c-passthrough.webp", fit: "contain" },
+  { title: "World-model evaluation", tag: "frame 05",  kind: "util", note: "training loss and multi-step rollout error",       src: "samples/forklift_lstm_report_metrics.webp", fit: "contain" },
+  { title: "Branch B — fresh detect",  tag: "frame 06",  kind: "synthetic", note: "YOLOv8n-pose · conf ≥ 0.1",             src: "samples/branch-b-detect.webp" },
+  { title: "Branch D — SfM reconstruction", tag: "frame 07", kind: "util",  note: "1,110 points · 35 camera poses",       src: "samples/branch-d-sfm.webp", fit: "contain" },
+  { title: "Branch D — point cloud",   tag: "frame 08",  kind: "util",      note: "SfM reconstruction, wide view",         src: "samples/branch-d-sfm-wide.webp", fit: "contain" },
 ];
 
 function isVideo(src){ return /\.(mp4|webm|mov)(\?.*)?$/i.test(src || ""); }
@@ -655,9 +696,9 @@ function renderTiles(){
     const [a,b] = palettes[i % palettes.length];
     let mediaInner;
     if (c.src && isVideo(c.src)) {
-      mediaInner = `<video src="${c.src}" muted loop playsinline autoplay${c.speed ? ` data-speed="${c.speed}"` : ""}></video>`;
+      mediaInner = `<video src="${c.src}" muted loop playsinline autoplay preload="none" poster="samples/nd-t4-restoration.webp"${c.speed ? ` data-speed="${c.speed}"` : ""}></video>`;
     } else if (c.src) {
-      mediaInner = `<img src="${c.src}" alt="${c.title}">`;
+      mediaInner = `<img src="${c.src}" loading="lazy" decoding="async" alt="${c.title}">`;
     } else {
       mediaInner = `<div class="grain"></div><div class="cs-pending-mark">AWAITING<br>OUTPUT</div>`;
     }
@@ -697,6 +738,21 @@ const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("in"); });
 }, { threshold: 0.12 });
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+/* privacy-friendly Plausible events */
+document.querySelectorAll("[data-analytics]").forEach(el => {
+  el.addEventListener("click", () => window.plausible?.(el.dataset.analytics));
+});
+document.querySelectorAll("video").forEach(video => {
+  video.addEventListener("play", () => window.plausible?.("demo-video-play"), { once:true });
+});
+const seenDepth = new Set();
+window.addEventListener("scroll", () => {
+  const depth = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+  [25, 50, 75, 90].forEach(mark => {
+    if (depth >= mark && !seenDepth.has(mark)) { seenDepth.add(mark); window.plausible?.("scroll-depth", { props:{ percent:mark } }); }
+  });
+}, { passive:true });
 </script>
 
 </body>
