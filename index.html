@@ -251,6 +251,7 @@
   .pipe-tag.util{background:var(--paper-dimmer); color:var(--dark-2);}
   .pipe-tag.pending{background:transparent; border:1px dashed var(--line); color:var(--paper-dimmer);}
 
+
   /* ---------- contact sheet ---------- */
   .contact-sheet-wrap{background:var(--dark-3); border:1px solid var(--line);}
   .contact-sheet{
@@ -380,7 +381,6 @@
     </a>
     <nav class="nav-links">
       <a href="#about">About</a>
-      <a href="#pipeline">Pipeline</a>
       <a href="#samples">Samples</a>
     </nav>
     <div class="nav-cta">
@@ -452,88 +452,6 @@
 
   <hr class="rule">
 
-  <!-- ================= PIPELINE ================= -->
-  <section id="pipeline">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <div>
-          <div class="eyebrow">Pipeline · seven stages</div>
-          <h2>One capture.<br>A labeled dataset.</h2>
-        </div>
-        <p>A source capture flows through restoration, target labeling, controlled generation, validation, dataset export, and model training. Each accepted sample keeps its source, recipe, seed, labels, and validation record.</p>
-      </div>
-
-      <div class="pipeline reveal in">
-        <div class="pipe-row">
-          <div class="pipe-num"><span class="fr">FRAME</span>01</div>
-          <div class="pipe-main">
-            <h3>Label once</h3>
-            <p>Start with the objects and situations your model needs to understand, from pallets and parts to people and safety zones.</p>
-          </div>
-          <div class="pipe-tag">detection</div>
-        </div>
-        <div class="pipe-row">
-          <div class="pipe-num"><span class="fr">FRAME</span>02</div>
-          <div class="pipe-main">
-            <h3>NeuroDepth-T4 restoration</h3>
-            <p>Recover detail from difficult footage so your training set is useful in dim, fast-moving, and changing environments.</p>
-          </div>
-          <div class="pipe-tag">restoration</div>
-        </div>
-        <div class="pipe-row">
-          <div class="pipe-num"><span class="fr">FRAME</span>03</div>
-          <div class="pipe-main">
-            <h3>Branch A — R2R mutation</h3>
-            <p>Create controlled changes such as lighting shifts, blur, weather, noise, and occlusion while keeping the scene and labels consistent.</p>
-          </div>
-          <div class="pipe-tag synthetic">synthetic</div>
-        </div>
-        <div class="pipe-row">
-          <div class="pipe-num"><span class="fr">FRAME</span>04</div>
-          <div class="pipe-main">
-            <h3>Branch C — passthrough</h3>
-            <p>Keep a clean version of the original data so every experiment has a clear real-world reference.</p>
-          </div>
-          <div class="pipe-tag util">baseline</div>
-        </div>
-        <div class="pipe-row">
-          <div class="pipe-num"><span class="fr">FRAME</span>05</div>
-          <div class="pipe-main">
-            <h3>Geometry-conditioned generation</h3>
-            <p>Generate fresh appearances and camera views that still look like the environment your model will actually enter.</p>
-          </div>
-          <div class="pipe-tag synthetic">synthesis</div>
-        </div>
-        <div class="pipe-row">
-          <div class="pipe-num"><span class="fr">FRAME</span>06</div>
-          <div class="pipe-main">
-            <h3>Branch B — fresh detection + R2R</h3>
-            <p>Every new frame is checked before it reaches training. Weak or inconsistent results are separated out instead of quietly lowering model quality.</p>
-          </div>
-          <div class="pipe-tag synthetic">synthetic</div>
-        </div>
-        <div class="pipe-row">
-          <div class="pipe-num"><span class="fr">FRAME</span>07</div>
-          <div class="pipe-main">
-            <h3>Summary</h3>
-            <p>Every branch's output manifest rolls up into one summary file for the whole run.</p>
-          </div>
-          <div class="pipe-tag util">manifest</div>
-        </div>
-        <div class="pipe-row">
-          <div class="pipe-num"><span class="fr">BRANCH</span>D</div>
-          <div class="pipe-main">
-            <h3>Spatial reconstruction + world state</h3>
-            <p>Turn multi-view captures into a spatial view of the scene, then use it to create new training views and action-aware sequences.</p>
-          </div>
-          <div class="pipe-tag util">3D</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="rule">
-
   <!-- ================= SAMPLES / CONTACT SHEET ================= -->
   <section id="how-it-works">
     <div class="wrap">
@@ -554,7 +472,7 @@
           <div class="eyebrow">Contact sheet</div>
           <h2>From one real capture</h2>
         </div>
-        <p>Inspect the transformation chain: real capture, restoration, mutation, generated labels, and 3D reconstruction.</p>
+        <p>Inspect the transformation chain: real capture, restoration, controlled generation, spatial reconstruction, and world-model evaluation.</p>
       </div>
 
       <div class="light-table contact-sheet-wrap reveal in" style="background:var(--dark-3); border-color:var(--line);">
@@ -659,6 +577,9 @@ const TILES = [
   { title: "Branch A — R2R mutation",  tag: "frame 03",  kind: "synthetic", note: "28 frames · restored → mutated",        src: "samples/branch-a-r2r.webp", fit: "contain" },
   { title: "Branch C — passthrough",   tag: "frame 04",  kind: "util",      note: "28 frames · transferred labels",        src: "samples/branch-c-passthrough.webp", fit: "contain" },
   { title: "World-model evaluation", tag: "frame 05",  kind: "util", note: "training loss and multi-step rollout error",       src: "samples/forklift_lstm_report_metrics.webp", fit: "contain" },
+  { title: "Spatial input",           tag: "3D / 01",    kind: "real", note: "captured forklift cabin view",                    src: "3d/spatial-input.jpeg" },
+  { title: "Depth and structure",    tag: "3D / 02",    kind: "util", note: "estimated scene geometry",                        src: "3d/spatial-depth.jpeg" },
+  { title: "Reconstructed scene",    tag: "3D / 03",    kind: "synthetic", note: "novel view from the captured environment",       src: "3d/spatial-reconstruction.jpeg" },
   { title: "Branch B — fresh detect",  tag: "frame 06",  kind: "synthetic", note: "YOLOv8n-pose · conf ≥ 0.1",             src: "samples/branch-b-detect.webp" },
   { title: "Branch D — SfM reconstruction", tag: "frame 07", kind: "util",  note: "1,110 points · 35 camera poses",       src: "samples/branch-d-sfm.webp", fit: "contain" },
   { title: "Branch D — point cloud",   tag: "frame 08",  kind: "util",      note: "SfM reconstruction, wide view",         src: "samples/branch-d-sfm-wide.webp", fit: "contain" },
