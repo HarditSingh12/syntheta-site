@@ -1,0 +1,27 @@
+# Local development
+node_modules/
+.vercel/
+.env
+.env.*
+!.env.example
+
+# Build and runtime output
+dist/
+build/
+coverage/
+*.log
+*.tmp
+*.temp
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Temporary asset-generation scripts and previews
+make_*.py
+*_draft.*
+*_old.*
+og-image.jpg
